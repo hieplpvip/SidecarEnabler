@@ -1,0 +1,57 @@
+language: cpp
+
+matrix:
+  include:
+  - os: osx
+    name: "Build"
+    osx_image: xcode10.2
+    compiler: clang
+
+    script:
+      - src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/bootstrap.sh) && eval "$src" || exit 1
+      - xcodebuild -configuration Debug
+      - xcodebuild -jobs 1 -configuration Release
+
+    deploy:
+      provider: releases
+      file: "build/*/*.zip"
+      file_glob: true
+      api_key:
+        secure: "BOTxFlC2lE8LtOZ0eVXz5eQRV21a248Rirr3Fvsj51kzvUpExtcdlpWv+xFOlIIqsZb2luzj6q1cG8bNpWWp2/EseHdtWqF2/ZwfBLs2XdXTyS5aunUxbZ4FHLhMPDRgNunTcoZuzMRtSAyNl5maGKveKN9irWwI1HbKOh4p9jQDATA2QNDC6v/uQ1fJR3Vjiye9nIKk6SOhmy62qBCjLzEEe0SiRYw2ewMjm0eybfHt3YNwRy2lBfKXpnxsapA41kq4B/ThoJk3TFmRRZDzveJin20CXI2L2jvN9K2d2gWncHG5oRV63m+4CBGl7MLxJaAHD7flGmr4l2qFbIUgMXGlKmQSo7SJEO09K6weG2n6duqXxprnQSyFCOERRu0KyDPHnSUkr6y5FBTkkV3YMOUXRVUk7pA+kOlKjV89O6WLxpirZ9NzGz9jlKg32wTTyj9UBYcrCDIOravL/eTZ7g+xdXNV9vKyhsN2v3iPmHQ+DNJ73DdZjhj+BFT56E8Fz+r5aF13Z6tGVChKNqe3+CYih59Tgzwd+y5YU0Et4b/55Qkh/MexXm8YqJNzzZD7jRKpP3zlOFNuAxIDlBXYUtfgYh5CmcXlOgk8626JDFUSakjwYfxE2+rpQxyhAVNn/etmaSOfsL1pbKDjE1aM0M4Pho68dOju/k4Vb0x4FgA="
+      on:
+        tags: true
+
+  - os: osx
+    name: "Analyze Clang"
+    osx_image: xcode11
+    compiler: clang
+
+    script:
+      - src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/bootstrap.sh) && eval "$src" || exit 1
+      - xcodebuild analyze -quiet -scheme SidecarUnlocker -configuration Debug CLANG_ANALYZER_OUTPUT=plist-html CLANG_ANALYZER_OUTPUT_DIR="$(pwd)/clang-analyze" && [ "$(find clang-analyze -name "*.html")" = "" ]
+      - xcodebuild analyze -quiet -scheme SidecarUnlocker -configuration Release CLANG_ANALYZER_OUTPUT=plist-html CLANG_ANALYZER_OUTPUT_DIR="$(pwd)/clang-analyze" && [ "$(find clang-analyze -name "*.html")" = "" ]
+
+  - os: osx
+    name: "Analyze Coverity"
+    osx_image: xcode10.2
+    compiler: clang
+
+    before_install:
+      - curl -Ls https://entrust.com/root-certificates/entrust_l1k.cer -o ~/entrust_l1k.crt || exit 1
+      - curl -LS https://curl.haxx.se/ca/cacert.pem -o ~/cacert.pem || exit 1
+      - cat ~/entrust_l1k.crt >> ~/cacert.pem || exit 1
+      - echo "cacert=\"$HOME/cacert.pem\"" > ~/.curlrc || exit 1
+      - echo "ca_certificate=$HOME/cacert.pem" > ~/.wgetrc || exit 1
+
+    script:
+      - echo "This script runs coverity..."
+
+    addons:
+      coverity_scan:
+        project:
+          name: "hieplpvip/SidecarUnlocker"
+          description: "SidecarUnlocker"
+        notification_email: $NOTIFICATION_EMAIL
+        build_command_prepend: "src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/bootstrap.sh) && eval \"$src\" || exit 1 ; src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/Lilu/master/Lilu/Scripts/covstrap.sh) && eval \"$src\" || exit 1"
+        build_command: "xcodebuild -configuration Release"
+        branch_pattern: master

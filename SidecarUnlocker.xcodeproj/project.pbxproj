@@ -192,6 +192,7 @@
 				4120B1B22198DC9B00888F5A /* Sources */,
 				4120B1B32198DC9B00888F5A /* Frameworks */,
 				4120B1B42198DC9B00888F5A /* Resources */,
+				4C6BA26924E8DD8F005C8062 /* Archive */,
 			);
 			buildRules = (
 			);
@@ -245,6 +246,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4C6BA26924E8DD8F005C8062 /* Archive */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Archive;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${TARGET_BUILD_DIR}\"\n\narchive=\"${PRODUCT_NAME}-${MODULE_VERSION}-$(echo $CONFIGURATION | tr /a-z/ /A-Z/).zip\"\nrm -rf *.zip\nif [ \"$CONFIGURATION\" == \"Release\" ]; then\n  strip -x -T \"${EXECUTABLE_PATH}\" &>/dev/null || strip -x \"${EXECUTABLE_PATH}\"\nfi\nzip -qry -FS \"${archive}\" *\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4120B1B22198DC9B00888F5A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -266,7 +288,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -325,7 +346,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
