@@ -34,7 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4120B1B62198DC9B00888F5A /* SidecarUnlocker.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SidecarUnlocker.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		4120B1B62198DC9B00888F5A /* SidecarEnabler.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SidecarEnabler.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		4120B1BB2198DC9B00888F5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4120B1C32198DCF000888F5A /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = Lilu.kext/Contents/Resources/Library/libkmod.a; sourceTree = SOURCE_ROOT; };
 		4120B1C42198DCF000888F5A /* plugin_start.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin_start.cpp; path = Lilu.kext/Contents/Resources/Library/plugin_start.cpp; sourceTree = SOURCE_ROOT; };
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				4120B1C12198DCD200888F5A /* SDK */,
-				4120B1B82198DC9B00888F5A /* SidecarUnlocker */,
+				4120B1B82198DC9B00888F5A /* SidecarEnabler */,
 				4120B1B72198DC9B00888F5A /* Products */,
 				4C7BF27E24E8C79400EC9631 /* LICENSE.md */,
 				4C7BF27F24E8C79400EC9631 /* README.md */,
@@ -90,18 +90,18 @@
 		4120B1B72198DC9B00888F5A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4120B1B62198DC9B00888F5A /* SidecarUnlocker.kext */,
+				4120B1B62198DC9B00888F5A /* SidecarEnabler.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4120B1B82198DC9B00888F5A /* SidecarUnlocker */ = {
+		4120B1B82198DC9B00888F5A /* SidecarEnabler */ = {
 			isa = PBXGroup;
 			children = (
 				4120B1BB2198DC9B00888F5A /* Info.plist */,
 				4120B1F22198DE3F00888F5A /* kern_start.cpp */,
 			);
-			path = SidecarUnlocker;
+			path = SidecarEnabler;
 			sourceTree = "<group>";
 		};
 		4120B1C12198DCD200888F5A /* SDK */ = {
@@ -184,9 +184,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4120B1B52198DC9B00888F5A /* SidecarUnlocker */ = {
+		4120B1B52198DC9B00888F5A /* SidecarEnabler */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4120B1BE2198DC9B00888F5A /* Build configuration list for PBXNativeTarget "SidecarUnlocker" */;
+			buildConfigurationList = 4120B1BE2198DC9B00888F5A /* Build configuration list for PBXNativeTarget "SidecarEnabler" */;
 			buildPhases = (
 				4120B1B12198DC9B00888F5A /* Headers */,
 				4120B1B22198DC9B00888F5A /* Sources */,
@@ -198,9 +198,9 @@
 			);
 			dependencies = (
 			);
-			name = SidecarUnlocker;
+			name = SidecarEnabler;
 			productName = SystemProfilerMemoryFixup;
-			productReference = 4120B1B62198DC9B00888F5A /* SidecarUnlocker.kext */;
+			productReference = 4120B1B62198DC9B00888F5A /* SidecarEnabler.kext */;
 			productType = "com.apple.product-type.kernel-extension";
 		};
 /* End PBXNativeTarget section */
@@ -218,7 +218,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4120B1B02198DC9A00888F5A /* Build configuration list for PBXProject "SidecarUnlocker" */;
+			buildConfigurationList = 4120B1B02198DC9A00888F5A /* Build configuration list for PBXProject "SidecarEnabler" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -231,7 +231,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4120B1B52198DC9B00888F5A /* SidecarUnlocker */,
+				4120B1B52198DC9B00888F5A /* SidecarEnabler */,
 			);
 		};
 /* End PBXProject section */
@@ -400,16 +400,16 @@
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Lilu.kext/Contents/Resources";
-				INFOPLIST_FILE = SidecarUnlocker/Info.plist;
+				INFOPLIST_FILE = SidecarEnabler/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Lilu.kext/Contents/Resources/Library",
 				);
-				MODULE_NAME = com.hieplpvip.SidecarUnlocker;
+				MODULE_NAME = com.hieplpvip.SidecarEnabler;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
 				MODULE_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hieplpvip.SidecarUnlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieplpvip.SidecarEnabler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = kext;
 			};
@@ -426,16 +426,16 @@
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Lilu.kext/Contents/Resources";
-				INFOPLIST_FILE = SidecarUnlocker/Info.plist;
+				INFOPLIST_FILE = SidecarEnabler/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Lilu.kext/Contents/Resources/Library",
 				);
-				MODULE_NAME = com.hieplpvip.SidecarUnlocker;
+				MODULE_NAME = com.hieplpvip.SidecarEnabler;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
 				MODULE_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hieplpvip.SidecarUnlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieplpvip.SidecarEnabler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = kext;
 			};
@@ -444,7 +444,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4120B1B02198DC9A00888F5A /* Build configuration list for PBXProject "SidecarUnlocker" */ = {
+		4120B1B02198DC9A00888F5A /* Build configuration list for PBXProject "SidecarEnabler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4120B1BC2198DC9B00888F5A /* Debug */,
@@ -453,7 +453,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4120B1BE2198DC9B00888F5A /* Build configuration list for PBXNativeTarget "SidecarUnlocker" */ = {
+		4120B1BE2198DC9B00888F5A /* Build configuration list for PBXNativeTarget "SidecarEnabler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4120B1BF2198DC9B00888F5A /* Debug */,

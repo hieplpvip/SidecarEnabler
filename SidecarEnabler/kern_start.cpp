@@ -89,8 +89,8 @@ static UserPatcher::ProcInfo ADDPR(procInfo)[] = {
 
 const size_t ADDPR(procInfoSize) {13};
 
-static void startUnlocker() {
-    DBGLOG("SidecarUnlocker", "start");
+static void startPlugin() {
+    DBGLOG("SidecarEnabler", "start");
 
     if (getKernelVersion() >= KernelVersion::Catalina) {
         lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
@@ -119,5 +119,5 @@ PluginConfiguration ADDPR(config) {
     arrsize(bootargBeta),
     KernelVersion::Catalina,
     KernelVersion::BigSur,
-    startUnlocker
+    startPlugin
 };

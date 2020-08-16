@@ -1,8 +1,8 @@
-# SidecarUnlocker
+# SidecarEnabler
 
-[![Github release](https://img.shields.io/github/release/hieplpvip/SidecarUnlocker.svg?color=blue)](https://github.com/hieplpvip/SidecarUnlocker/releases/latest)
-[![Github downloads](https://img.shields.io/github/downloads/hieplpvip/SidecarUnlocker/total.svg?color=blue)](https://github.com/hieplpvip/SidecarUnlocker/releases)
-[![Build Status](https://travis-ci.org/hieplpvip/SidecarUnlocker.svg?branch=master)](https://travis-ci.com/hieplpvip/SidecarUnlocker)
+[![Github release](https://img.shields.io/github/release/hieplpvip/SidecarEnabler.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases/latest)
+[![Github downloads](https://img.shields.io/github/downloads/hieplpvip/SidecarEnabler/total.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases)
+[![Build Status](https://travis-ci.org/hieplpvip/SidecarEnabler.svg?branch=master)](https://travis-ci.com/hieplpvip/SidecarEnabler)
 [![Scan Status](https://scan.coverity.com/projects/21606/badge.svg)](https://scan.coverity.com/projects/21606)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-red.svg)](https://paypal.me/lebhiep)
 
@@ -32,13 +32,13 @@ Sidecar is disabled on these devices by Apple:
 
 These identifiers are hardcoded in `/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/SidecarCore`.
 
-SidecarUnlocker works by patching these identifiers so that they won't match any real devices (e.g. patching `iPad` to `iXad`, `MacBook` to `XacBook`).
+SidecarEnabler works by patching these identifiers so that they won't match any real devices (e.g. patching `iPad` to `iXad`, `MacBook` to `XacBook`).
 
 As the check is done only on macOS side, there's no need to patch iPadOS (i.e. jailbreaking is not required).
 
 ### Warnings
 
-Apple must have their reasons for disabling Sidecar on old devices (e.g. lack of HEVC encoder/decoders). SidecarUnlocker only disables the check. It doesn't workaround problems caused by incompatible hardware.
+Apple must have their reasons for disabling Sidecar on old devices (e.g. lack of HEVC encoder/decoders). SidecarEnabler only disables the check. It doesn't workaround problems caused by incompatible hardware.
 
 If you have problems with Sidecar, [Duet Display](https://www.duetdisplay.com/) may be a better choice.
 
