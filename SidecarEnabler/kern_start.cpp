@@ -1,29 +1,45 @@
-/*
- * Copyright (c) 2020 Le Bao Hiep
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+//
+//  kern_start.cpp
+//  SidecarEnabler
+//
+//  Copyright © 2020 Le Bao Hiep. All rights reserved.
+//
 
 #include <Headers/plugin_start.hpp>
 #include <Headers/kern_api.hpp>
+#include <Headers/kern_file.hpp>
+
+#pragma mark -
+#pragma mark Constants
+#pragma mark -
 
 static const uint32_t SectionActive = 1;
+
+static const char* SidecarCoreBinaryPath = "/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/SidecarCore";
+
+// I found these binaries by running
+// find / -perm +111 -type f -exec sh -c 'jtool2 -L "{}" 2>/dev/null | grep SidecarCore && echo "SidecarCore matched at {}"' \;
+static UserPatcher::ProcInfo ADDPR(procInfo)[] = {
+    { "/usr/libexec/SidecarDisplayAgent", 32, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/usr/libexec/SidecarRelay", 25, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/MacOS/Sidecar", 71, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/Resources/sidecarPrefCheck", 84, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/AnnotationKit.framework/Versions/A/AnnotationKit", 82, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/XPCServices/DisplayMarkup.xpc/Contents/MacOS/DisplayMarkup", 125, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/ReminderKitUI.framework/Versions/A/XPCServices/com.apple.ReminderKitUI.ReminderCreationViewService.xpc/Contents/MacOS/com.apple.ReminderKitUI.ReminderCreationViewService", 203, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/MarkupUI.framework/Versions/A/MarkupUI", 72, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/SidecarUI.framework/Versions/A/SidecarUI", 74, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Notes.app/Contents/MacOS/Notes", 51, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Mail.app/Contents/MacOS/Mail", 49, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Reminders.app/Contents/MacOS/Reminders", 59, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Reminders.app/Contents/PlugIns/RemindersSharingExtension.appex/Contents/MacOS/RemindersSharingExtension", 124, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact }
+};
+
+static const size_t ADDPR(procInfoSize) {13};
+
+#pragma mark -
+#pragma mark Patch version 1
+#pragma mark -
 
 // iPad4,X name patches
 static const uint8_t find_iPad4[] = "iPad4";
@@ -53,7 +69,7 @@ static const uint8_t repl_Macmini[] = "Xacmini";
 static const uint8_t find_MacPro[] = "MacPro";
 static const uint8_t repl_MacPro[] = "XacPro";
 
-static UserPatcher::BinaryModPatch patches[] {
+static UserPatcher::BinaryModPatch patches_v1[] {
     { CPU_TYPE_X86_64, 0, find_iPad4, repl_iPad4, 5, 0, 9, UserPatcher::FileSegment::SegmentTextCstring, SectionActive },
     { CPU_TYPE_X86_64, 0, find_iPad5, repl_iPad5, 5, 0, 4, UserPatcher::FileSegment::SegmentTextCstring, SectionActive },
     { CPU_TYPE_X86_64, 0, find_iPad6, repl_iPad6, 5, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionActive },
@@ -63,37 +79,120 @@ static UserPatcher::BinaryModPatch patches[] {
     { CPU_TYPE_X86_64, 0, find_MacPro, repl_MacPro, 6, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionActive }
 };
 
-static const char* SidecarCoreBinaryPath = "/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/SidecarCore";
-
-static UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
-    { SidecarCoreBinaryPath, patches, 7 }
+static UserPatcher::BinaryModInfo ADDPR(binaryMod_v1)[] {
+    { SidecarCoreBinaryPath, patches_v1, 7 }
 };
 
-const size_t ADDPR(binaryModSize) {1};
+static const size_t ADDPR(binaryModSize_v1) {1};
 
-// I found these binaries by running
-// find / -perm +111 -type f -exec sh -c 'jtool2 -L "{}" 2>/dev/null | grep SidecarCore && echo "SidecarCore matched at {}"' \;
-static UserPatcher::ProcInfo ADDPR(procInfo)[] = {
-    { "/usr/libexec/SidecarDisplayAgent", 32, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/usr/libexec/SidecarRelay", 25, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/MacOS/Sidecar", 71, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/Resources/sidecarPrefCheck", 84, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PrivateFrameworks/AnnotationKit.framework/Versions/A/AnnotationKit", 82, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/XPCServices/DisplayMarkup.xpc/Contents/MacOS/DisplayMarkup", 125, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PrivateFrameworks/ReminderKitUI.framework/Versions/A/XPCServices/com.apple.ReminderKitUI.ReminderCreationViewService.xpc/Contents/MacOS/com.apple.ReminderKitUI.ReminderCreationViewService", 203, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PrivateFrameworks/MarkupUI.framework/Versions/A/MarkupUI", 72, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Library/PrivateFrameworks/SidecarUI.framework/Versions/A/SidecarUI", 74, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Applications/Notes.app/Contents/MacOS/Notes", 51, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Applications/Mail.app/Contents/MacOS/Mail", 49, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Applications/Reminders.app/Contents/MacOS/Reminders", 59, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
-    { "/System/Applications/Reminders.app/Contents/PlugIns/RemindersSharingExtension.appex/Contents/MacOS/RemindersSharingExtension", 124, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact }
+#pragma mark -
+#pragma mark Patch version 2
+#pragma mark -
+
+static const size_t patchBytesCount = 30;
+static const size_t gadgetBytesCount = 5;
+
+// Patch _SidecarDisplayIsSupportedMac to return 1
+static const uint8_t ref_mac[] = { 0x4c, 0x8d, 0x25, 0x23, 0xd7, 0x00, 0x00 };
+static uint8_t find_mac[patchBytesCount] = {};
+static uint8_t repl_mac[patchBytesCount] = {
+    0x31, 0xc0,  // xor eax, eax
+    0xff, 0xc0,  // inc eax,
+    0xc3         // ret
 };
 
-const size_t ADDPR(procInfoSize) {13};
+// Patch ___filterSupportedDevices_block_invoke to return 1
+static const uint8_t ref_filter[] = { 0x4c, 0x8d, 0x3d, 0x8f, 0xb1, 0x00, 0x00 };
+static uint8_t find_filter[patchBytesCount] = {};
+static uint8_t repl_filter[patchBytesCount] = {
+    0x31, 0xc0,  // xor eax, eax
+    0xff, 0xc0,  // inc eax,
+    0xc3         // ret
+};
+
+static UserPatcher::BinaryModPatch patches_v2[] {
+    { CPU_TYPE_X86_64, 0, find_mac, repl_mac, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionActive },
+    { CPU_TYPE_X86_64, 0, find_filter, repl_filter, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionActive }
+};
+
+static UserPatcher::BinaryModInfo ADDPR(binaryMod_v2)[] {
+    { SidecarCoreBinaryPath, patches_v2, 2 }
+};
+
+static const size_t ADDPR(binaryModSize_v2) {1};
+
+static void buildPatch(KernelPatcher &patcher, const char *path, const uint8_t *refBuffer, uint8_t *findBuffer, uint8_t *replBuffer, const char *funcName) {
+    DBGLOG("SidecarEnabler", "buildPatch %s start", funcName);
+    
+    // Get contents of binary.
+    size_t outSize;
+    uint8_t *buffer = FileIO::readFileToBuffer(path, outSize);
+    if (buffer == NULL) {
+        panic("SidecarEnabler: Failed to read binary %s\n", path);
+    }
+    
+    // Find reference.
+    off_t index = -1;
+    for (off_t i = 0; i + 6 < outSize; ++i) {
+        if (buffer[i    ] == refBuffer[0] &&
+            buffer[i + 1] == refBuffer[1] &&
+            buffer[i + 2] == refBuffer[2] &&
+            buffer[i + 3] == refBuffer[3] &&
+            buffer[i + 4] == refBuffer[4] &&
+            buffer[i + 5] == refBuffer[5] &&
+            buffer[i + 6] == refBuffer[6]) {
+            index = i;
+            break;
+        }
+    }
+    
+    // If we found no match, we can't go on.
+    if (index == -1) {
+        panic("SidecarEnabler: Failed to find reference for function %s in binary %s\n", funcName, path);
+    }
+    
+    // Go back to the start of the function
+    while (index >= 0 && !(buffer[index] == 0x55 && buffer[index + 1] == 0x48 && buffer[index + 2] == 0x89 && buffer[index + 3] == 0xe5)) {
+        --index;
+    }
+
+    // If we found no match, we can't go on.
+    if (index == -1) {
+        panic("SidecarEnabler: Failed to find the start of function %s in binary %s\n", funcName, path);
+    }
+
+    // Build find pattern.
+    uint8_t *bufferOffset = buffer + index;
+    for (uint32_t i = 0; i < patchBytesCount; ++i) {
+        findBuffer[i] = bufferOffset[i];
+        SYSLOG("SidecarEnabler", "%x\n", findBuffer[i]);
+    }
+    for (uint32_t i = gadgetBytesCount; i < patchBytesCount; ++i) {
+        replBuffer[i] = bufferOffset[i];
+    }
+
+    // Free buffer.
+    Buffer::deleter(buffer);
+}
+
+static void buildPatches(void *user, KernelPatcher &patcher) {
+    buildPatch(patcher, SidecarCoreBinaryPath, ref_mac, find_mac, repl_mac, "_SidecarDisplayIsSupportedMac");
+    buildPatch(patcher, SidecarCoreBinaryPath, ref_filter, find_filter, repl_filter, "___filterSupportedDevices_block_invoke");
+}
+
+#pragma mark -
+#pragma mark Main program
+#pragma mark -
 
 static void startPlugin() {
     DBGLOG("SidecarEnabler", "start");
-    lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
+    bool use_old_patch = checkKernelArgument("-scuoldpatch");
+    if (use_old_patch) {
+        lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod_v1), ADDPR(binaryModSize_v1));
+    } else {
+        lilu.onPatcherLoadForce(buildPatches);
+        lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod_v2), ADDPR(binaryModSize_v2));
+    }
 }
 
 static const char *bootargOff[] {
@@ -118,5 +217,7 @@ PluginConfiguration ADDPR(config) {
     arrsize(bootargBeta),
     KernelVersion::Catalina,
     KernelVersion::BigSur,
-    startPlugin
+    []() {
+        startPlugin();
+    }
 };
