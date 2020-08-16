@@ -6,7 +6,7 @@
 [![Scan Status](https://scan.coverity.com/projects/21606/badge.svg)](https://scan.coverity.com/projects/21606)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-red.svg)](https://paypal.me/lebhiep)
 
-A [Lilu](https://github.com/acidanthera/Lilu) plugin that unlocks Sidecar for all Macs and iPads.
+A [Lilu](https://github.com/acidanthera/Lilu) plugin that enables Sidecar for all Macs and iPads.
 
 Tested with iPad mini 4.
 
