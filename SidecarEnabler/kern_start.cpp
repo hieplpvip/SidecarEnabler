@@ -71,30 +71,29 @@ static UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 
 const size_t ADDPR(binaryModSize) {1};
 
+// I found these binaries by running
+// find / -perm +111 -type f -exec sh -c 'jtool2 -L "{}" 2>/dev/null | grep SidecarCore && echo "SidecarCore matched at {}"' \;
 static UserPatcher::ProcInfo ADDPR(procInfo)[] = {
-    {"/usr/libexec/SidecarDisplayAgent", 32, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/usr/libexec/SidecarRelay", 25, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PreferencePanes/Sidecar.prefPane/Contents/MacOS/Sidecar", 71, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PreferencePanes/Sidecar.prefPane/Contents/Resources/sidecarPrefCheck", 84, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PrivateFrameworks/AnnotationKit.framework/Versions/A/AnnotationKit", 82, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/XPCServices/DisplayMarkup.xpc/Contents/MacOS/DisplayMarkup", 125, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PrivateFrameworks/ReminderKitUI.framework/Versions/A/XPCServices/com.apple.ReminderKitUI.ReminderCreationViewService.xpc/Contents/MacOS/com.apple.ReminderKitUI.ReminderCreationViewService", 203, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PrivateFrameworks/MarkupUI.framework/Versions/A/MarkupUI", 72, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Library/PrivateFrameworks/SidecarUI.framework/Versions/A/SidecarUI", 74, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Applications/Notes.app/Contents/MacOS/Notes", 51, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Applications/Mail.app/Contents/MacOS/Mail", 49, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Applications/Reminders.app/Contents/MacOS/Reminders", 59, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact},
-    {"/System/Applications/Reminders.app/Contents/PlugIns/RemindersSharingExtension.appex/Contents/MacOS/RemindersSharingExtension", 124, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact}
+    { "/usr/libexec/SidecarDisplayAgent", 32, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/usr/libexec/SidecarRelay", 25, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/MacOS/Sidecar", 71, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PreferencePanes/Sidecar.prefPane/Contents/Resources/sidecarPrefCheck", 84, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/AnnotationKit.framework/Versions/A/AnnotationKit", 82, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/SidecarCore.framework/Versions/A/XPCServices/DisplayMarkup.xpc/Contents/MacOS/DisplayMarkup", 125, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/ReminderKitUI.framework/Versions/A/XPCServices/com.apple.ReminderKitUI.ReminderCreationViewService.xpc/Contents/MacOS/com.apple.ReminderKitUI.ReminderCreationViewService", 203, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/MarkupUI.framework/Versions/A/MarkupUI", 72, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Library/PrivateFrameworks/SidecarUI.framework/Versions/A/SidecarUI", 74, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Notes.app/Contents/MacOS/Notes", 51, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Mail.app/Contents/MacOS/Mail", 49, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Reminders.app/Contents/MacOS/Reminders", 59, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact },
+    { "/System/Applications/Reminders.app/Contents/PlugIns/RemindersSharingExtension.appex/Contents/MacOS/RemindersSharingExtension", 124, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact }
 };
 
 const size_t ADDPR(procInfoSize) {13};
 
 static void startPlugin() {
     DBGLOG("SidecarEnabler", "start");
-
-    if (getKernelVersion() >= KernelVersion::Catalina) {
-        lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
-    }
+    lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 }
 
 static const char *bootargOff[] {
