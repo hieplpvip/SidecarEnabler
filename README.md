@@ -1,5 +1,11 @@
 # SidecarUnlocker
 
+[![Github release](https://img.shields.io/github/release/hieplpvip/SidecarUnlocker.svg?color=blue)](https://github.com/hieplpvip/SidecarUnlocker/releases/latest)
+[![Github downloads](https://img.shields.io/github/downloads/hieplpvip/SidecarUnlocker/total.svg?color=blue)](https://github.com/hieplpvip/SidecarUnlocker/releases)
+[![Build Status](https://travis-ci.org/hieplpvip/SidecarUnlocker.svg?branch=master)](https://travis-ci.com/hieplpvip/SidecarUnlocker)
+[![Scan Status](https://scan.coverity.com/projects/21606/badge.svg)](https://scan.coverity.com/projects/21606)
+[![Donate with PayPal](https://img.shields.io/badge/paypal-donate-red.svg)](https://paypal.me/lebhiep)
+
 A [Lilu](https://github.com/acidanthera/Lilu) plugin that unlocks Sidecar for all Macs and iPads.
 
 #### Requirement
