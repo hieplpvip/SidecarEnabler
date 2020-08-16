@@ -2,8 +2,8 @@
 
 [![Github release](https://img.shields.io/github/release/hieplpvip/SidecarEnabler.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases/latest)
 [![Github downloads](https://img.shields.io/github/downloads/hieplpvip/SidecarEnabler/total.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases)
-[![Build Status](https://travis-ci.org/hieplpvip/SidecarEnabler.svg?branch=master)](https://travis-ci.com/hieplpvip/SidecarEnabler)
-[![Scan Status](https://scan.coverity.com/projects/21606/badge.svg)](https://scan.coverity.com/projects/21606)
+[![Build Status](https://travis-ci.org/hieplpvip/SidecarEnabler.svg?branch=master)](https://travis-ci.org/hieplpvip/SidecarEnabler)
+[![Scan Status](https://scan.coverity.com/projects/21608/badge.svg)](https://scan.coverity.com/projects/21608)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-red.svg)](https://paypal.me/lebhiep)
 
 A [Lilu](https://github.com/acidanthera/Lilu) plugin that enables Sidecar for all Macs and iPads.
