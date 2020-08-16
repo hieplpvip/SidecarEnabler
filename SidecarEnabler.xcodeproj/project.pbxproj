@@ -60,6 +60,7 @@
 		4120B1DC2198DD1200888F5A /* kern_policy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = kern_policy.hpp; path = Lilu.kext/Contents/Resources/Headers/kern_policy.hpp; sourceTree = SOURCE_ROOT; };
 		4120B1DD2198DD1200888F5A /* kern_util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = kern_util.hpp; path = Lilu.kext/Contents/Resources/Headers/kern_util.hpp; sourceTree = SOURCE_ROOT; };
 		4120B1F22198DE3F00888F5A /* kern_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_start.cpp; sourceTree = "<group>"; };
+		4C104B5924E8F819000D9116 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		4C7BF27E24E8C79400EC9631 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		4C7BF27F24E8C79400EC9631 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +85,7 @@
 				4120B1B72198DC9B00888F5A /* Products */,
 				4C7BF27E24E8C79400EC9631 /* LICENSE.md */,
 				4C7BF27F24E8C79400EC9631 /* README.md */,
+				4C104B5924E8F819000D9116 /* CHANGELOG.md */,
 			);
 			sourceTree = "<group>";
 		};
