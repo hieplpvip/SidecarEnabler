@@ -6,7 +6,7 @@
 [![Scan Status](https://scan.coverity.com/projects/21608/badge.svg)](https://scan.coverity.com/projects/21608)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-red.svg)](https://paypal.me/lebhiep)
 
-A [Lilu](https://github.com/acidanthera/Lilu) plugin that enables Sidecar for all Macs and iPads.
+A [Lilu](https://github.com/acidanthera/Lilu) plugin that remove any SMBIOS checks used by Sidecar (for both Macs and iPads).
 
 Tested with iPad mini 4.
 
@@ -36,11 +36,13 @@ SidecarEnabler works by patching these identifiers so that they won't match any 
 
 As the check is done only on macOS side, there's no need to patch iPadOS (i.e. jailbreaking is not required).
 
-### Warnings
+### Notes
 
-Apple must have their reasons for disabling Sidecar on old devices (e.g. lack of HEVC encoder/decoders). SidecarEnabler only disables the check. It doesn't workaround problems caused by incompatible hardware.
-
-If you have problems with Sidecar, [Duet Display](https://www.duetdisplay.com/) may be a better choice.
+- Use a cable if wireless connection doesn't work for you (error 32002).
+- SidecarEnabler only remove the check. It doesn't fix any hardware-related problems:
+  + Apple disables Sidecar on Broadwell and older CPUs because those CPUs doesn't have built-in support for HEVC. Sidecar can still work but you will get some graphical glitches or stutter.
+  + Sidecar may not work on iGPU-less systems (see [this](https://github.com/AMD-OSX/bugtracker/issues/1)).
+- If you have problems with Sidecar, [Duet Display](https://www.duetdisplay.com/) may be a better choice.
 
 ### Credits
 - [Apple](https://www.apple.com) for macOS
