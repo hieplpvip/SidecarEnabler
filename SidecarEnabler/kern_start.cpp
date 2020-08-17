@@ -35,8 +35,6 @@ static UserPatcher::ProcInfo ADDPR(procInfo)[] = {
     { "/System/Applications/Reminders.app/Contents/PlugIns/RemindersSharingExtension.appex/Contents/MacOS/RemindersSharingExtension", 124, SectionActive, UserPatcher::ProcInfo::ProcFlags::MatchExact }
 };
 
-static const size_t ADDPR(procInfoSize) {13};
-
 #pragma mark -
 #pragma mark Patch version 1
 #pragma mark -
@@ -80,48 +78,42 @@ static UserPatcher::BinaryModPatch patches_v1[] {
 };
 
 static UserPatcher::BinaryModInfo ADDPR(binaryMod_v1)[] {
-    { SidecarCoreBinaryPath, patches_v1, 7 }
+    { SidecarCoreBinaryPath, patches_v1, arrsize(patches_v1) }
 };
-
-static const size_t ADDPR(binaryModSize_v1) {1};
 
 #pragma mark -
 #pragma mark Patch version 2
 #pragma mark -
 
 static const size_t patchBytesCount = 30;
-static const size_t gadgetBytesCount = 5;
+static const size_t gadgetBytesCount = 6;
 
 // Patch _SidecarDisplayIsSupportedMac to return 1
 static const uint8_t ref_mac[] = { 0x4c, 0x8d, 0x25, 0x23, 0xd7, 0x00, 0x00 };
 static uint8_t find_mac[patchBytesCount] = {};
 static uint8_t repl_mac[patchBytesCount] = {
-    0x31, 0xc0,  // xor eax, eax
-    0xff, 0xc0,  // inc eax,
-    0xc3         // ret
+    0xb8, 0x01, 0x00, 0x00, 0x00,  // mov eax, 0x1
+    0xc3                           // ret
 };
 
 // Patch ___filterSupportedDevices_block_invoke to return 1
 static const uint8_t ref_filter[] = { 0x4c, 0x8d, 0x3d, 0x8f, 0xb1, 0x00, 0x00 };
 static uint8_t find_filter[patchBytesCount] = {};
 static uint8_t repl_filter[patchBytesCount] = {
-    0x31, 0xc0,  // xor eax, eax
-    0xff, 0xc0,  // inc eax,
-    0xc3         // ret
+    0xb8, 0x01, 0x00, 0x00, 0x00,  // mov eax, 0x1
+    0xc3                           // ret
 };
 
 static UserPatcher::BinaryModPatch patches_v2[] {
-    { CPU_TYPE_X86_64, 0, find_mac, repl_mac, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionActive },
-    { CPU_TYPE_X86_64, 0, find_filter, repl_filter, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionActive }
+    { CPU_TYPE_X86_64, 0, find_mac, repl_mac, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionActive },
+    { CPU_TYPE_X86_64, 0, find_filter, repl_filter, patchBytesCount, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionActive }
 };
 
 static UserPatcher::BinaryModInfo ADDPR(binaryMod_v2)[] {
-    { SidecarCoreBinaryPath, patches_v2, 2 }
+    { SidecarCoreBinaryPath, patches_v2, arrsize(patches_v2) }
 };
 
-static const size_t ADDPR(binaryModSize_v2) {1};
-
-static void buildPatch(KernelPatcher &patcher, const char *path, const uint8_t *refBuffer, uint8_t *findBuffer, uint8_t *replBuffer, const char *funcName) {
+static void buildPatch(const char *path, const uint8_t *refBuffer, uint8_t *findBuffer, uint8_t *replBuffer, const char *funcName) {
     DBGLOG("SidecarEnabler", "buildPatch %s start", funcName);
     
     // Get contents of binary.
@@ -176,22 +168,52 @@ static void buildPatch(KernelPatcher &patcher, const char *path, const uint8_t *
 }
 
 static void buildPatches(void *user, KernelPatcher &patcher) {
-    buildPatch(patcher, SidecarCoreBinaryPath, ref_mac, find_mac, repl_mac, "_SidecarDisplayIsSupportedMac");
-    buildPatch(patcher, SidecarCoreBinaryPath, ref_filter, find_filter, repl_filter, "___filterSupportedDevices_block_invoke");
+    buildPatch(SidecarCoreBinaryPath, ref_mac, find_mac, repl_mac, "_SidecarDisplayIsSupportedMac");
+    buildPatch(SidecarCoreBinaryPath, ref_filter, find_filter, repl_filter, "___filterSupportedDevices_block_invoke");
 }
+
+#pragma mark -
+#pragma mark Patch version 3
+#pragma mark -
+
+// Patch _SidecarDisplayIsSupportedMac to return 1
+static const uint8_t find_mac_v3[] = {
+    0x55, 0x48, 0x89, 0xe5, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x53, 0x48, 0x83, 0xec, 0x18, 0x8a, 0x05
+};
+static const uint8_t repl_mac_v3[] {
+    0x31, 0xc0, 0xff, 0xc0, 0xc3, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90
+};
+
+// Patch ___filtcerSupportedDevices_block_invoke to return 1
+static const uint8_t find_filter_v3[] = {
+    0x55, 0x48, 0x89, 0xe5, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x53, 0x48, 0x83, 0xec, 0x28, 0x48, 0x89, 0xf7, 0x48, 0x8b, 0x1d
+};
+static const uint8_t repl_filter_v3[] {
+    0x31, 0xc0, 0xff, 0xc0, 0xc3, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90
+};
+
+static UserPatcher::BinaryModPatch patches_v3[] {
+    { CPU_TYPE_X86_64, 0, find_mac_v3, repl_mac_v3, arrsize(find_mac_v3), 0, 5, UserPatcher::FileSegment::SegmentTextText, SectionActive },
+    { CPU_TYPE_X86_64, 0, find_filter_v3, repl_filter_v3, arrsize(find_filter_v3), 0, 5, UserPatcher::FileSegment::SegmentTextText, SectionActive }
+};
+
+static UserPatcher::BinaryModInfo ADDPR(binaryMod_v3)[] {
+    { SidecarCoreBinaryPath, patches_v3, arrsize(patches_v3) }
+};
 
 #pragma mark -
 #pragma mark Main program
 #pragma mark -
 
-static void startPlugin() {
+static void ADDPR(startPlugin)() {
     DBGLOG("SidecarEnabler", "start");
     bool use_old_patch = checkKernelArgument("-scuoldpatch");
     if (use_old_patch) {
-        lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod_v1), ADDPR(binaryModSize_v1));
+        lilu.onProcLoadForce(ADDPR(procInfo), arrsize(ADDPR(procInfo)), nullptr, nullptr, ADDPR(binaryMod_v1), arrsize(ADDPR(binaryMod_v1)));
     } else {
-        lilu.onPatcherLoadForce(buildPatches);
-        lilu.onProcLoadForce(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod_v2), ADDPR(binaryModSize_v2));
+        //lilu.onPatcherLoadForce(buildPatches);
+        //lilu.onProcLoadForce(ADDPR(procInfo), arrsize(ADDPR(procInfo)), nullptr, nullptr, ADDPR(binaryMod_v2), arrsize(ADDPR(binaryMod_v2)));
+        lilu.onProcLoadForce(ADDPR(procInfo), arrsize(ADDPR(procInfo)), nullptr, nullptr, ADDPR(binaryMod_v3), arrsize(ADDPR(binaryMod_v3)));
     }
 }
 
@@ -218,6 +240,6 @@ PluginConfiguration ADDPR(config) {
     KernelVersion::Catalina,
     KernelVersion::BigSur,
     []() {
-        startPlugin();
+        ADDPR(startPlugin)();
     }
 };
