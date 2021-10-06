@@ -1,5 +1,7 @@
 # SidecarEnabler
 
+***This kernel extension is no longer maintained! Please use [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) instead.***
+
 [![Github release](https://img.shields.io/github/release/hieplpvip/SidecarEnabler.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases/latest)
 [![Github downloads](https://img.shields.io/github/downloads/hieplpvip/SidecarEnabler/total.svg?color=blue)](https://github.com/hieplpvip/SidecarEnabler/releases)
 [![Build Status](https://travis-ci.com/hieplpvip/SidecarEnabler.svg?branch=master)](https://travis-ci.com/hieplpvip/SidecarEnabler)
